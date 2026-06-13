@@ -67,7 +67,7 @@
             "type": "color",
             "id": "background",
             "label": "t:settings.background",
-            "default": "#0A0A0A",
+            "default": "#141414",
             "alpha": true
           },
           {
