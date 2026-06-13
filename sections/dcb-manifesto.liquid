@@ -1,0 +1,140 @@
+{% comment %}
+  DCB Manifesto — oversized brand statement with a word-by-word scroll
+  reveal. Custom DCB section. Colors follow the chosen scheme.
+{% endcomment %}
+
+{% liquid
+  assign s = section.settings
+  assign lines = s.statement | strip | newline_to_br | split: '<br />'
+%}
+
+<script src="{{ 'dcb-reveal.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+<div class="section-background color-{{ s.color_scheme }}"></div>
+<div
+  class="section section--{{ s.section_width }} color-{{ s.color_scheme }} spacing-style dcb-manifesto dcb-manifesto--{{ s.alignment }}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="dcb-manifesto"
+>
+  <div class="dcb-manifesto__inner">
+    {%- if s.eyebrow != blank -%}
+      <p class="dcb-manifesto__eyebrow">{{ s.eyebrow }}</p>
+    {%- endif -%}
+
+    {%- if s.statement != blank -%}
+      <dcb-reveal class="dcb-manifesto__statement">
+        {%- for line in lines -%}
+          {%- assign clean = line | strip_html | strip -%}
+          {%- if clean != blank -%}
+            <span class="dcb-manifesto__line" data-reveal-text>{{ clean }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </dcb-reveal>
+    {%- endif -%}
+
+    {%- if s.button_label != blank and s.button_link != blank -%}
+      <a class="dcb-manifesto__button button" href="{{ s.button_link }}">{{ s.button_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .dcb-manifesto__inner {
+    width: 100%;
+    max-width: var(--page-width, 1200px);
+    margin-inline: auto;
+    padding-inline: var(--page-margin, 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .dcb-manifesto--center .dcb-manifesto__inner { align-items: center; text-align: center; }
+  .dcb-manifesto--left .dcb-manifesto__inner { align-items: flex-start; text-align: left; }
+
+  .dcb-manifesto__eyebrow {
+    margin: 0;
+    font-family: var(--font-subheading--family, var(--font-body--family));
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .dcb-manifesto__statement {
+    display: block;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight, 700);
+    text-transform: uppercase;
+    line-height: 0.95;
+    font-size: clamp(2.25rem, 8.5vw, 6rem);
+    color: var(--color-foreground-heading);
+  }
+
+  .dcb-manifesto__line { display: block; }
+
+  .dcb-reveal__word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.45em);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  dcb-reveal[data-revealed] .dcb-reveal__word {
+    opacity: 1;
+    transform: none;
+  }
+
+  .dcb-manifesto__button { align-self: var(--dcb-manifesto-btn-self, center); margin-top: 8px; }
+  .dcb-manifesto--left .dcb-manifesto__button { align-self: flex-start; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dcb-reveal__word { opacity: 1; transform: none; transition: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "DCB Manifesto",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE DCB ETHOS" },
+    {
+      "type": "textarea",
+      "id": "statement",
+      "label": "Statement",
+      "info": "Each line break becomes its own line of oversized type.",
+      "default": "NOT FOR EVERYONE.\nBUILT FOR THE BOLD.\nELEVATE YOUR DARKNESS."
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the latest" },
+    { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "default": "page-width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ]
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-5" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 96 }
+  ],
+  "presets": [{ "name": "DCB Manifesto", "category": "DCB" }]
+}
+{% endschema %}

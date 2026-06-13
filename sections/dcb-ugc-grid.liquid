@@ -1,0 +1,106 @@
+{% comment %}
+  DCB Community / UGC grid — an "as worn by the cult" wall of customer
+  photos with @handle overlays. Custom DCB section + dcb_ugc_item block.
+  Lazy images with responsive srcset; hover zoom on pointer devices.
+{% endcomment %}
+
+{% assign s = section.settings %}
+
+<div class="section-background color-{{ s.color_scheme }}"></div>
+<div
+  class="section section--page-width color-{{ s.color_scheme }} spacing-style dcb-ugc"
+  style="
+    {%- render 'spacing-style', settings: section.settings %}
+    --dcb-ugc-cols: {{ s.columns }};
+  "
+  data-testid="dcb-ugc-grid"
+>
+  {%- if s.heading != blank or s.link_label != blank -%}
+    <div class="dcb-ugc__head">
+      {%- if s.heading != blank -%}<h2 class="dcb-ugc__heading">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.link_label != blank and s.link_url != blank -%}
+        <a class="dcb-ugc__link" href="{{ s.link_url }}"{% if s.open_new_tab %} target="_blank" rel="noopener"{% endif %}>{{ s.link_label }}</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="dcb-ugc__grid">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .dcb-ugc__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 24px;
+  }
+
+  .dcb-ugc__heading { margin: 0; text-transform: uppercase; }
+
+  .dcb-ugc__link {
+    font-family: var(--font-subheading--family, var(--font-body--family));
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: var(--font-size--xs);
+    color: var(--color-foreground);
+    border-bottom: 1px solid currentcolor;
+    padding-bottom: 2px;
+  }
+
+  .dcb-ugc__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--dcb-ugc-cols, 5), 1fr);
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .dcb-ugc__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "DCB Community grid",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "blocks": [{ "type": "dcb_ugc_item" }],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "AS WORN BY THE CULT" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Follow @dcbworldwide" },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+    { "type": "checkbox", "id": "open_new_tab", "label": "Open link in new tab", "default": true },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [
+    {
+      "name": "DCB Community grid",
+      "category": "DCB",
+      "blocks": {
+        "g1": { "type": "dcb_ugc_item", "settings": { "handle": "@dcbworldwide" } },
+        "g2": { "type": "dcb_ugc_item", "settings": { "handle": "@dcbworldwide" } },
+        "g3": { "type": "dcb_ugc_item", "settings": { "handle": "@dcbworldwide" } },
+        "g4": { "type": "dcb_ugc_item", "settings": { "handle": "@dcbworldwide" } },
+        "g5": { "type": "dcb_ugc_item", "settings": { "handle": "@dcbworldwide" } }
+      },
+      "block_order": ["g1", "g2", "g3", "g4", "g5"]
+    }
+  ]
+}
+{% endschema %}

@@ -11,6 +11,28 @@
   border-block-start: 1px solid var(--color-border);
 }
 
+/* Global scroll-reveal for homepage sections (driven by dcb-inview.js).
+   The hidden initial state is gated on .dcb-motion so no-JS / reduced-motion
+   users are unaffected. First section (hero) is excluded to protect LCP. */
+.dcb-motion .template-index #MainContent > .shopify-section:not(:first-child) {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dcb-motion .template-index #MainContent > .shopify-section.is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dcb-motion .template-index #MainContent > .shopify-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* White backdrop behind product media.
    Some product photos are transparent PNGs, so on the dark page they
    read as "black-backed". A white backdrop only shows through where the
