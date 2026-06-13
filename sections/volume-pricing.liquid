@@ -1,0 +1,414 @@
+{%- comment -%}
+  ============================================================================
+  DYNAMIC VOLUME PRICING TABLE  —  Approach A: No-App
+  ----------------------------------------------------------------------------
+  A reusable Online Store 2.0 section. Displays quantity price breaks on a
+  product and drives the chosen quantity into the cart, tagged with a tier
+  property. The actual saving is enforced by a native Shopify AUTOMATIC
+  DISCOUNT the merchant configures once (quantity breaks).
+
+  PRODUCT SOURCE: reads the current page's product automatically; a manual
+                  product picker overrides it (e.g. when placed on a page).
+  BREAK MODES:    'percent' (3:10 => 10% off at qty 3+)
+                  'unit'    (3:18 => $18.00 each at qty 3+)
+  DISPLAY MODES:  'table' (full tier table) | 'strip' (compact pills)
+  ============================================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign product = section.settings.product_override
+  if product == blank
+    assign product = product
+  endif
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .vp {
+    --vp-ink: {{ section.settings.text_color }};
+    --vp-muted: {{ section.settings.text_color | color_modify: 'alpha', 0.6 }};
+    --vp-surface: {{ section.settings.surface_color }};
+    --vp-accent: {{ section.settings.accent_color }};
+    --vp-accent-soft: {{ section.settings.accent_color | color_modify: 'alpha', 0.1 }};
+    --vp-line: {{ section.settings.text_color | color_modify: 'alpha', 0.14 }};
+    --vp-radius: {{ section.settings.corner_radius }}px;
+
+    color: var(--vp-ink);
+    max-width: {{ section.settings.max_width }}px;
+    margin-inline: auto;
+    font-family: inherit;
+  }
+  #shopify-section-{{ section.id }} .vp__head { margin-bottom: 14px; }
+  #shopify-section-{{ section.id }} .vp__title {
+    font-size: 1.05rem; font-weight: 700; margin: 0 0 2px;
+  }
+  #shopify-section-{{ section.id }} .vp__sub {
+    font-size: 0.85rem; color: var(--vp-muted); margin: 0;
+  }
+
+  /* ---- Table mode ---- */
+  #shopify-section-{{ section.id }} .vp-table {
+    width: 100%; border-collapse: collapse;
+    border: 1px solid var(--vp-line); border-radius: var(--vp-radius); overflow: hidden;
+    font-size: 0.9rem;
+  }
+  #shopify-section-{{ section.id }} .vp-table th,
+  #shopify-section-{{ section.id }} .vp-table td {
+    padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--vp-line);
+  }
+  #shopify-section-{{ section.id }} .vp-table th {
+    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--vp-muted); font-weight: 600; background: var(--vp-surface);
+  }
+  #shopify-section-{{ section.id }} .vp-table tr:last-child td { border-bottom: 0; }
+  #shopify-section-{{ section.id }} .vp-table td:not(:first-child),
+  #shopify-section-{{ section.id }} .vp-table th:not(:first-child) {
+    text-align: right; font-variant-numeric: tabular-nums;
+  }
+  #shopify-section-{{ section.id }} .vp-table tr[data-active="true"] {
+    background: var(--vp-accent-soft);
+  }
+  #shopify-section-{{ section.id }} .vp-table tr[data-active="true"] td { font-weight: 700; }
+  #shopify-section-{{ section.id }} .vp-save { color: var(--vp-accent); font-weight: 600; }
+
+  /* ---- Strip mode ---- */
+  #shopify-section-{{ section.id }} .vp-strip {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  #shopify-section-{{ section.id }} .vp-pill {
+    border: 1px solid var(--vp-line); border-radius: 999px;
+    padding: 8px 14px; font-size: 0.82rem; font-weight: 600;
+    display: flex; gap: 6px; align-items: baseline;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  #shopify-section-{{ section.id }} .vp-pill[data-active="true"] {
+    border-color: var(--vp-accent); background: var(--vp-accent-soft); color: var(--vp-accent);
+  }
+  #shopify-section-{{ section.id }} .vp-pill small { color: var(--vp-muted); font-weight: 500; }
+  #shopify-section-{{ section.id }} .vp-pill[data-active="true"] small { color: var(--vp-accent); }
+
+  /* ---- Controls ---- */
+  #shopify-section-{{ section.id }} .vp-controls {
+    margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+  }
+  #shopify-section-{{ section.id }} .vp-qty {
+    display: flex; align-items: center; border: 1px solid var(--vp-line);
+    border-radius: 999px; overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .vp-qty button {
+    width: 38px; height: 38px; border: 0; background: transparent; color: var(--vp-ink);
+    font-size: 1.15rem; cursor: pointer; display: grid; place-items: center;
+  }
+  #shopify-section-{{ section.id }} .vp-qty button:hover { background: var(--vp-line); }
+  #shopify-section-{{ section.id }} .vp-qty input {
+    width: 48px; text-align: center; border: 0; background: transparent;
+    font-weight: 700; font-size: 0.95rem; color: var(--vp-ink);
+    font-variant-numeric: tabular-nums; -moz-appearance: textfield;
+  }
+  #shopify-section-{{ section.id }} .vp-qty input::-webkit-outer-spin-button,
+  #shopify-section-{{ section.id }} .vp-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  #shopify-section-{{ section.id }} .vp-readout { display: flex; flex-direction: column; gap: 2px; }
+  #shopify-section-{{ section.id }} .vp-readout__price {
+    font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  #shopify-section-{{ section.id }} .vp-readout__meta { font-size: 0.8rem; color: var(--vp-muted); }
+  #shopify-section-{{ section.id }} .vp-readout__meta em { color: var(--vp-accent); font-style: normal; font-weight: 600; }
+
+  #shopify-section-{{ section.id }} .vp-cta {
+    border: 0; background: var(--vp-accent); color: {{ section.settings.accent_text_color }};
+    font-weight: 700; font-size: 0.92rem; padding: 13px 22px; border-radius: var(--vp-radius);
+    cursor: pointer; margin-left: auto; transition: opacity .15s ease, transform .1s ease;
+  }
+  #shopify-section-{{ section.id }} .vp-cta:hover:not(:disabled) { opacity: .9; }
+  #shopify-section-{{ section.id }} .vp-cta:active:not(:disabled) { transform: translateY(1px); }
+  #shopify-section-{{ section.id }} .vp-cta:disabled { opacity: .4; cursor: not-allowed; }
+  #shopify-section-{{ section.id }} .vp-note { margin: 10px 0 0; font-size: 0.78rem; color: var(--vp-muted); }
+
+  @media (max-width: 560px) {
+    #shopify-section-{{ section.id }} .vp-cta { margin-left: 0; width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} * { transition: none !important; }
+  }
+</style>
+
+{%- if product != blank and variant != blank -%}
+<div class="vp"
+     data-volume-pricing
+     data-variant-id="{{ variant.id }}"
+     data-base-price="{{ variant.price }}"
+     data-break-mode="{{ section.settings.break_mode }}"
+     data-display="{{ section.settings.display_mode }}"
+     data-tiers="{{ section.settings.tiers | escape }}">
+
+  <div class="vp__head">
+    {%- if section.settings.heading != blank -%}<p class="vp__title">{{ section.settings.heading }}</p>{%- endif -%}
+    {%- if section.settings.subheading != blank -%}<p class="vp__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+  </div>
+
+  {%- if section.settings.display_mode == 'table' -%}
+    <table class="vp-table">
+      <thead>
+        <tr>
+          <th>{{ section.settings.col_qty | default: 'Quantity' }}</th>
+          <th>{{ section.settings.col_unit | default: 'Per unit' }}</th>
+          <th>{{ section.settings.col_save | default: 'You save' }}</th>
+        </tr>
+      </thead>
+      <tbody data-tier-rows><!-- rows injected by JS --></tbody>
+    </table>
+  {%- else -%}
+    <div class="vp-strip" data-tier-strip><!-- pills injected by JS --></div>
+  {%- endif -%}
+
+  <div class="vp-controls">
+    <div class="vp-qty">
+      <button type="button" data-dec aria-label="Decrease quantity">&minus;</button>
+      <input type="number" data-qty-input value="1" min="1" inputmode="numeric" aria-label="Quantity">
+      <button type="button" data-inc aria-label="Increase quantity">&plus;</button>
+    </div>
+    <div class="vp-readout" aria-live="polite">
+      <span class="vp-readout__price" data-unit-price>{{ variant.price | money }}</span>
+      <span class="vp-readout__meta" data-readout-meta>each &middot; {{ variant.price | money }} total</span>
+    </div>
+    <button type="button" class="vp-cta" data-add>{{ section.settings.button_label | default: 'Add to cart' }}</button>
+  </div>
+  <p class="vp-note">{{ section.settings.helper_text }}</p>
+</div>
+
+<script>
+(function () {
+  var root = document.querySelector('#shopify-section-{{ section.id }} [data-volume-pricing]');
+  if (!root) return;
+
+  var MONEY_FORMAT = {{ shop.money_format | json }};
+  var basePrice = parseInt(root.dataset.basePrice, 10);   // cents
+  var variantId = parseInt(root.dataset.variantId, 10);
+  var breakMode = root.dataset.breakMode;                 // 'percent' | 'unit'
+  var display   = root.dataset.display;                   // 'table' | 'strip'
+
+  // Parse tiers "qty:value" — value is percent or a unit price (major units).
+  var tiers = (root.dataset.tiers || '').split(/\r?\n/).map(function (line) {
+    var p = line.split(':');
+    return { qty: parseInt(p[0], 10), val: parseFloat(p[1]) };
+  }).filter(function (t) { return t.qty > 0 && !isNaN(t.val); })
+    .sort(function (a, b) { return a.qty - b.qty; });
+
+  // Always include the qty-1 base as the implicit first tier.
+  function unitPriceFor(qty) {
+    var price = basePrice;
+    tiers.forEach(function (t) {
+      if (qty >= t.qty) {
+        price = breakMode === 'percent'
+          ? Math.round(basePrice * (1 - t.val / 100))
+          : Math.round(t.val * 100);
+      }
+    });
+    return price;
+  }
+
+  function activeTierQty(qty) {
+    var aq = 1;
+    tiers.forEach(function (t) { if (qty >= t.qty) aq = t.qty; });
+    return aq;
+  }
+
+  function formatMoney(cents) {
+    var value = (cents / 100).toFixed(2);
+    return MONEY_FORMAT.replace(/\{\{\s*amount\s*\}\}/, value)
+                       .replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(cents / 100));
+  }
+
+  // ---- Build the tier display once ----
+  function buildRows() {
+    var rows = [{ qty: 1, unit: basePrice }].concat(tiers.map(function (t) {
+      return { qty: t.qty, unit: unitPriceFor(t.qty) };
+    }));
+
+    if (display === 'table') {
+      var tbody = root.querySelector('[data-tier-rows]');
+      tbody.innerHTML = rows.map(function (r, i) {
+        var next = rows[i + 1];
+        var label = next ? r.qty + '\u2013' + (next.qty - 1) : r.qty + '+';
+        if (r.qty === 1 && next && next.qty === 2) label = '1';
+        var save = basePrice - r.unit;
+        var saveTxt = save > 0 ? '<span class="vp-save">' + formatMoney(save) + ' / unit</span>' : '\u2014';
+        return '<tr data-tier-row data-qty="' + r.qty + '">' +
+                 '<td>' + label + '</td>' +
+                 '<td>' + formatMoney(r.unit) + '</td>' +
+                 '<td>' + saveTxt + '</td>' +
+               '</tr>';
+      }).join('');
+    } else {
+      var strip = root.querySelector('[data-tier-strip]');
+      strip.innerHTML = rows.map(function (r) {
+        var sub = r.qty === 1 ? formatMoney(r.unit) + ' ea' : formatMoney(r.unit) + ' ea';
+        return '<span class="vp-pill" data-tier-pill data-qty="' + r.qty + '">' +
+                 (r.qty === 1 ? 'Single' : r.qty + '+') +
+                 ' <small>' + sub + '</small></span>';
+      }).join('');
+    }
+  }
+
+  function highlight(qty) {
+    var aq = activeTierQty(qty);
+    var sel = display === 'table' ? '[data-tier-row]' : '[data-tier-pill]';
+    root.querySelectorAll(sel).forEach(function (el) {
+      el.dataset.active = (parseInt(el.dataset.qty, 10) === aq) ? 'true' : 'false';
+    });
+  }
+
+  function clampQty() {
+    var input = root.querySelector('[data-qty-input]');
+    var q = parseInt(input.value, 10);
+    if (isNaN(q) || q < 1) q = 1;
+    input.value = q;
+    return q;
+  }
+
+  function render() {
+    var qty = clampQty();
+    var unit = unitPriceFor(qty);
+    var total = unit * qty;
+    var fullTotal = basePrice * qty;
+    var saved = fullTotal - total;
+
+    root.querySelector('[data-unit-price]').textContent = formatMoney(unit);
+    var meta = 'each \u00b7 ' + formatMoney(total) + ' total';
+    if (saved > 0) meta += ' \u00b7 <em>save ' + formatMoney(saved) + '</em>';
+    root.querySelector('[data-readout-meta]').innerHTML = meta;
+    highlight(qty);
+  }
+
+  var input = root.querySelector('[data-qty-input]');
+  root.querySelector('[data-inc]').addEventListener('click', function () {
+    input.value = clampQty() + 1; render();
+  });
+  root.querySelector('[data-dec]').addEventListener('click', function () {
+    input.value = Math.max(1, clampQty() - 1); render();
+  });
+  input.addEventListener('input', render);
+
+  // Add to cart at the chosen quantity, tagged with the active tier.
+  // The native automatic discount applies the real saving at checkout.
+  root.querySelector('[data-add]').addEventListener('click', function () {
+    var btn = this;
+    var qty = clampQty();
+    var aq = activeTierQty(qty);
+    btn.disabled = true;
+    var original = btn.textContent;
+    btn.textContent = 'Adding\u2026';
+
+    fetch('{{ routes.cart_add_url }}.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: [{
+          id: variantId,
+          quantity: qty,
+          properties: { _volume_tier: aq + '+' }
+        }]
+      })
+    })
+    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function () {
+      btn.textContent = 'Added \u2713';
+      document.dispatchEvent(new CustomEvent('volume:added'));
+      setTimeout(function () { btn.textContent = original; btn.disabled = false; }, 1800);
+    })
+    .catch(function () {
+      btn.textContent = 'Try again';
+      btn.disabled = false;
+      setTimeout(function () { btn.textContent = original; }, 2200);
+    });
+  });
+
+  buildRows();
+  render();
+})();
+</script>
+{%- else -%}
+  <div class="vp">
+    <p class="vp__sub">Select a product in the section settings, or place this section on a product page.</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Volume Pricing Table",
+  "tag": "section",
+  "class": "section-volume-pricing",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Pricing breaks"
+    },
+    {
+      "type": "select",
+      "id": "break_mode",
+      "label": "How breaks are defined",
+      "options": [
+        { "value": "percent", "label": "Percent off (e.g. 3:10 = 10% off)" },
+        { "value": "unit", "label": "Fixed unit price (e.g. 3:18 = $18.00 each)" }
+      ],
+      "default": "percent"
+    },
+    {
+      "type": "textarea",
+      "id": "tiers",
+      "label": "Tiers",
+      "info": "One per line as quantity:value. In percent mode, value is the % off. In unit-price mode, value is the per-unit price in your store currency. Example —\n3:10\n5:15\n10:20",
+      "default": "3:10\n5:15\n10:20"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display style",
+      "options": [
+        { "value": "table", "label": "Full tier table" },
+        { "value": "strip", "label": "Compact pills" }
+      ],
+      "default": "table"
+    },
+    {
+      "type": "paragraph",
+      "content": "IMPORTANT — this section displays the breaks and sets quantity, but does not apply the discount itself. Create matching Automatic discounts in Settings > Discounts (one quantity break per tier). The on-page prices are a preview; checkout enforces the real saving."
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product_override",
+      "label": "Product (optional)",
+      "info": "Leave empty to use the current product page. Set this when placing the section on a page or homepage."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy more, save more" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Volume pricing applied automatically at checkout." },
+    { "type": "text", "id": "col_qty", "label": "Table column: quantity", "default": "Quantity" },
+    { "type": "text", "id": "col_unit", "label": "Table column: per unit", "default": "Per unit" },
+    { "type": "text", "id": "col_save", "label": "Table column: savings", "default": "You save" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Add to cart" },
+    { "type": "text", "id": "helper_text", "label": "Helper text", "default": "Discount applied automatically at checkout." },
+    {
+      "type": "header",
+      "content": "Layout & style"
+    },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 320, "max": 900, "step": 20, "default": 560, "unit": "px" },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 2, "default": 10, "unit": "px" },
+    { "type": "color", "id": "surface_color", "label": "Header / surface", "default": "#f7f6f3" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#2f5d4f" },
+    { "type": "color", "id": "accent_text_color", "label": "Accent text", "default": "#ffffff" }
+  ],
+  "presets": [
+    { "name": "Volume Pricing Table" }
+  ]
+}
+{% endschema %}
