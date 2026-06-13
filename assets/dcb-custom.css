@@ -1,0 +1,12 @@
+/* ------------------------------------------------------------------
+   DCB custom overrides — global tweaks that aren't expressible through
+   theme settings. Keep all bespoke CSS here (loaded after base.css).
+   Colors use Fabric's --color-* scheme vars so they track the theme.
+   ------------------------------------------------------------------ */
+
+/* Hairline dividers between homepage sections.
+   With the page flattened to #141414, these #2E2E2E lines give the page
+   its structure (stacked-panel look), echoing the USP bar's grid. */
+.template-index #MainContent > .shopify-section + .shopify-section {
+  border-block-start: 1px solid var(--color-border);
+}
