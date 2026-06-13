@@ -628,10 +628,10 @@
       "type": "volume-pricing",
       "name": "Volume Pricing Table",
       "settings": {
-        "break_mode": "unit",
+        "break_mode": "percent",
         "tiers": "3:10\n5:15\n10:20",
         "display_mode": "strip",
-        "product_override": "",
+        "product_override": "dcb-scents",
         "heading": "Buy more, save more",
         "subheading": "Volume pricing applied automatically at checkout.",
         "col_qty": "Quantity",
