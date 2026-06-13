@@ -10,3 +10,14 @@
 .template-index #MainContent > .shopify-section + .shopify-section {
   border-block-start: 1px solid var(--color-border);
 }
+
+/* White backdrop behind product media.
+   Some product photos are transparent PNGs, so on the dark page they
+   read as "black-backed". A white backdrop only shows through where the
+   image is actually transparent — opaque/lifestyle photos cover it, so
+   they're unaffected. Inherits the card's corner radius via the wrapper. */
+.product-media,
+.product-media-container,
+.product-media__image {
+  background-color: #FFFFFF;
+}
