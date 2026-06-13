@@ -623,34 +623,10 @@
         "padding-block-start": 24,
         "padding-block-end": 24
       }
-    },
-    "volume_pricing_jgTQWh": {
-      "type": "volume-pricing",
-      "name": "Volume Pricing Table",
-      "settings": {
-        "break_mode": "percent",
-        "tiers": "3:10\n5:15\n10:20",
-        "display_mode": "strip",
-        "product_override": "dcb-scents",
-        "heading": "Buy more, save more",
-        "subheading": "Volume pricing applied automatically at checkout.",
-        "col_qty": "Quantity",
-        "col_unit": "Per unit",
-        "col_save": "You save",
-        "button_label": "Add to cart",
-        "helper_text": "Discount applied automatically at checkout.",
-        "max_width": 560,
-        "corner_radius": 10,
-        "surface_color": "#f7f6f3",
-        "text_color": "#1a1a1a",
-        "accent_color": "#2f5d4f",
-        "accent_text_color": "#ffffff"
-      }
     }
   },
   "order": [
     "product-information",
-    "product_recommendations_UeDczP",
-    "volume_pricing_jgTQWh"
+    "product_recommendations_UeDczP"
   ]
 }
