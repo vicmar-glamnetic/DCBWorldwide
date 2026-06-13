@@ -4,6 +4,44 @@
    Colors use Fabric's --color-* scheme vars so they track the theme.
    ------------------------------------------------------------------ */
 
+/* Price treatment (per brand spec):
+   - regular price: muted
+   - sale price (has a struck original sibling): full emphasis
+   - original/compare-at: hint tone + strikethrough
+   Uses scheme-relative opacity so it adapts on dark and light pages. */
+.price {
+  color: rgb(var(--color-foreground-rgb) / 0.78);
+}
+
+[ref="priceContainer"]:has(.compare-at-price) .price {
+  color: var(--color-foreground-heading);
+  font-weight: 600;
+}
+
+.compare-at-price {
+  color: rgb(var(--color-foreground-rgb) / 0.45);
+  text-decoration: line-through;
+}
+
+/* Branded text selection. */
+::selection {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+/* Uppercase, tracked buttons for the streetwear look. */
+.button {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Smooth anchor scrolling, disabled for reduced-motion users. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* Faint film-grain texture over the whole page for premium tactile depth.
    Fixed, non-interactive, very low opacity. */
 body::before {
