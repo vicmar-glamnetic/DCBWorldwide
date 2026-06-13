@@ -4,6 +4,14 @@
    Colors use Fabric's --color-* scheme vars so they track the theme.
    ------------------------------------------------------------------ */
 
+/* Header/nav polish — uppercase, tracked nav links for a streetwear feel
+   (desktop menu + mobile drawer). */
+.header-menu .menu-list__link-title,
+.menu-list--mobile .menu-list__link-title {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 /* Hairline dividers between homepage sections.
    With the page flattened to #141414, these #2E2E2E lines give the page
    its structure (stacked-panel look), echoing the USP bar's grid. */
