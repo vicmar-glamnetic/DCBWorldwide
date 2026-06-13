@@ -623,35 +623,10 @@
         "padding-block-start": 24,
         "padding-block-end": 24
       }
-    },
-    "bundle_builder_pn4wUz": {
-      "type": "bundle-builder",
-      "name": "Smart Bundle Builder",
-      "settings": {
-        "mode": "fixed",
-        "fixed_size": 3,
-        "tiers": "3:15\n5:20\n10:25",
-        "pool_collection": "hoodies",
-        "product_limit": 12,
-        "eyebrow": "Build your own",
-        "heading": "Mix & match bundle",
-        "subheading": "Pick your favourites and the discount applies automatically.",
-        "summary_label": "Your bundle",
-        "button_label": "Add bundle to cart",
-        "helper_text": "Discount applied automatically at checkout.",
-        "max_width": 1100,
-        "corner_radius": 12,
-        "bg_color": "#ffffff",
-        "surface_color": "#f7f6f3",
-        "text_color": "#1a1a1a",
-        "accent_color": "#2f5d4f",
-        "accent_text_color": "#ffffff"
-      }
     }
   },
   "order": [
     "product-information",
-    "product_recommendations_UeDczP",
-    "bundle_builder_pn4wUz"
+    "product_recommendations_UeDczP"
   ]
 }
