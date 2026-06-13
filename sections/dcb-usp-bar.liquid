@@ -1,0 +1,160 @@
+{% comment %}
+  DCB USP / Trust bar — a responsive row of icon + label items.
+  Custom DCB section (not a fork of any core Fabric section).
+  Colors inherit from the selected color scheme (Fabric --color-* vars),
+  so it tracks the theme color picker. Mobile-first: 2-up grid at 375px.
+{% endcomment %}
+
+{% assign show_dividers = section.settings.show_dividers %}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style dcb-usp"
+  style="
+    {%- render 'spacing-style', settings: section.settings %}
+    --dcb-usp-min: {{ section.settings.item_min_width }}px;
+    --dcb-usp-gap: {{ section.settings.gap }}px;
+    --dcb-usp-icon-size: {{ section.settings.icon_size }}px;
+  "
+  data-testid="dcb-usp-bar"
+>
+  <ul
+    class="dcb-usp__grid{% if show_dividers %} dcb-usp__grid--dividers{% endif %}"
+    role="list"
+  >
+    {% content_for 'blocks' %}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .dcb-usp__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--dcb-usp-min, 150px), 1fr));
+    gap: var(--dcb-usp-gap, 16px);
+  }
+
+  /* Hairline dividers via the "gap as background" trick — responsive in both axes */
+  .dcb-usp__grid--dividers {
+    gap: 1px;
+    background-color: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .dcb-usp__grid--dividers .dcb-usp__item {
+    background-color: var(--color-background);
+  }
+
+  @media screen and (max-width: 749px) {
+    .dcb-usp__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "DCB USP bar",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header"]
+  },
+  "blocks": [{ "type": "dcb_usp_item" }],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "label": "Show hairline dividers",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "item_min_width",
+      "label": "Min item width (desktop)",
+      "min": 120,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap (when dividers off)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "DCB USP bar",
+      "category": "DCB",
+      "blocks": {
+        "item1": {
+          "type": "dcb_usp_item",
+          "settings": { "icon": "cash", "heading": "Cash on Delivery", "text": "Pay when it arrives" }
+        },
+        "item2": {
+          "type": "dcb_usp_item",
+          "settings": { "icon": "truck", "heading": "Nationwide Shipping", "text": "Ships across PH" }
+        },
+        "item3": {
+          "type": "dcb_usp_item",
+          "settings": { "icon": "shield", "heading": "100% Authentic", "text": "Official DCB drops" }
+        },
+        "item4": {
+          "type": "dcb_usp_item",
+          "settings": { "icon": "refresh", "heading": "Easy Returns", "text": "7-day hassle-free" }
+        }
+      },
+      "block_order": ["item1", "item2", "item3", "item4"]
+    }
+  ]
+}
+{% endschema %}

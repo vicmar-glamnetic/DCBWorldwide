@@ -1,0 +1,118 @@
+{% comment %}
+  DCB USP item — icon + heading + subtext. Used by the DCB USP bar section.
+  Inline SVGs use stroke="currentColor" so they inherit the scheme text color.
+{% endcomment %}
+
+{% assign s = block.settings %}
+
+<li class="dcb-usp__item" {{ block.shopify_attributes }}>
+  {%- if s.icon != 'none' -%}
+    <span class="dcb-usp__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%">
+        {%- case s.icon -%}
+          {%- when 'truck' -%}
+            <path d="M1 3h13v10H1z"/><path d="M14 6h4l3 3v4h-7z"/><circle cx="5.5" cy="16.5" r="1.8"/><circle cx="17.5" cy="16.5" r="1.8"/>
+          {%- when 'cash' -%}
+            <rect x="1.5" y="5" width="21" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M5 9v6M19 9v6"/>
+          {%- when 'shield' -%}
+            <path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/><path d="M9 12l2 2 4-4"/>
+          {%- when 'refresh' -%}
+            <path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>
+          {%- when 'chat' -%}
+            <path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/>
+          {%- when 'tag' -%}
+            <path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="7.5" r="1.3"/>
+          {%- when 'lock' -%}
+            <rect x="4.5" y="10" width="15" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+          {%- when 'star' -%}
+            <path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/>
+          {%- when 'bolt' -%}
+            <path d="M13 2 4 14h7l-1 8 9-12h-7z"/>
+        {%- endcase -%}
+      </svg>
+    </span>
+  {%- endif -%}
+
+  {%- if s.heading != blank -%}
+    <p class="dcb-usp__heading">{{ s.heading }}</p>
+  {%- endif -%}
+  {%- if s.text != blank -%}
+    <p class="dcb-usp__text">{{ s.text }}</p>
+  {%- endif -%}
+</li>
+
+{% stylesheet %}
+  .dcb-usp__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    gap: 6px;
+    padding: 16px 12px;
+  }
+
+  .dcb-usp__icon {
+    display: block;
+    width: var(--dcb-usp-icon-size, 28px);
+    height: var(--dcb-usp-icon-size, 28px);
+    color: var(--color-foreground-heading);
+    margin-bottom: 2px;
+  }
+
+  .dcb-usp__heading {
+    margin: 0;
+    font-family: var(--font-subheading--family, var(--font-body--family));
+    font-weight: 600;
+    font-size: var(--font-size--sm);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground-heading);
+    line-height: 1.2;
+  }
+
+  .dcb-usp__text {
+    margin: 0;
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    line-height: 1.3;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "USP item",
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "default": "truck",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "truck", "label": "Shipping / Truck" },
+        { "value": "cash", "label": "Cash on Delivery" },
+        { "value": "shield", "label": "Authentic / Shield" },
+        { "value": "refresh", "label": "Returns / Refresh" },
+        { "value": "chat", "label": "Support / Chat" },
+        { "value": "tag", "label": "Deals / Tag" },
+        { "value": "lock", "label": "Secure / Lock" },
+        { "value": "star", "label": "Quality / Star" },
+        { "value": "bolt", "label": "Fast / Bolt" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Nationwide Shipping"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Subtext",
+      "default": "Ships across PH"
+    }
+  ]
+}
+{% endschema %}
