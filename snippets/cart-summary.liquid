@@ -6,6 +6,7 @@
 {%- enddoc -%}
 
 <div class="cart-totals">
+  {% render 'dcb-shipping-bar' %}
   {% # We need to keep this node in place to allow morphing to work properly # %}
   <div class="cart-totals__original-container cart-primary-typography">
     {%- if cart.cart_level_discount_applications.size > 0 -%}

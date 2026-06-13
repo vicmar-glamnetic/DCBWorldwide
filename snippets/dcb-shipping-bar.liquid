@@ -1,0 +1,31 @@
+{%- comment -%}
+  DCB free-shipping progress bar. Lives inside cart-summary (which Shopify
+  re-renders on every cart change), so the bar updates automatically — no JS.
+  Threshold is a theme setting (major currency units); cart.total_price is in
+  cents, so the threshold is multiplied by 100.
+{%- endcomment -%}
+{%- if settings.show_free_shipping_bar and settings.free_shipping_threshold > 0 -%}
+  {%- assign threshold = settings.free_shipping_threshold | times: 100 -%}
+  {%- assign remaining = threshold | minus: cart.total_price -%}
+  {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
+  {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+  <div class="dcb-ship" style="--dcb-ship-pct: {{ pct }}%;">
+    <p class="dcb-ship__msg">
+      {%- if remaining > 0 -%}
+        You're <strong>{{ remaining | money }}</strong> away from <strong>FREE shipping</strong>
+      {%- else -%}
+        You've unlocked <strong>FREE shipping</strong> &#9733;
+      {%- endif -%}
+    </p>
+    <div
+      class="dcb-ship__track"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="{{ pct }}"
+      aria-label="Free shipping progress"
+    >
+      <span class="dcb-ship__fill"></span>
+    </div>
+  </div>
+{%- endif -%}
