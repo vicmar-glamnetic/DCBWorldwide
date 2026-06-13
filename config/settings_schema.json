@@ -67,42 +67,42 @@
             "type": "color",
             "id": "background",
             "label": "t:settings.background",
-            "default": "#FFFFFF",
+            "default": "#0A0A0A",
             "alpha": true
           },
           {
             "type": "color",
             "id": "foreground_heading",
             "label": "t:settings.headings",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "foreground",
             "label": "t:settings.text",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary",
             "label": "t:settings.primary_color",
-            "default": "#000F9F",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_hover",
             "label": "t:settings.primary_hover_color",
-            "default": "#000000",
+            "default": "#BDBDBD",
             "alpha": true
           },
           {
             "type": "color",
             "id": "border",
             "label": "t:settings.borders",
-            "default": "#E6E6E6",
+            "default": "#2E2E2E",
             "alpha": true
           },
           {
@@ -120,42 +120,43 @@
             "type": "color",
             "id": "primary_button_background",
             "label": "t:settings.background",
-            "default": "#000F9F",
+            "info": "DCB brand accent — swap here to recolor primary buttons without code.",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_text",
             "label": "t:settings.text",
-            "default": "#FFFFFF",
+            "default": "#0A0A0A",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_border",
             "label": "t:settings.borders",
-            "default": "#000F9F",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_hover_background",
             "label": "t:settings.hover_background",
-            "default": "#000F9F",
+            "default": "#E0E0E0",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_hover_text",
             "label": "t:settings.hover_text",
-            "default": "#FFFFFF",
+            "default": "#0A0A0A",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_hover_border",
             "label": "t:settings.hover_borders",
-            "default": "#000F9F",
+            "default": "#E0E0E0",
             "alpha": true
           },
           {
@@ -173,35 +174,35 @@
             "type": "color",
             "id": "secondary_button_text",
             "label": "t:settings.text",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "secondary_button_border",
             "label": "t:settings.borders",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "secondary_button_hover_background",
             "label": "t:settings.hover_background",
-            "default": "#FFFFFF",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "secondary_button_hover_text",
             "label": "t:settings.hover_text",
-            "default": "#000000",
+            "default": "#0A0A0A",
             "alpha": true
           },
           {
             "type": "color",
             "id": "secondary_button_hover_border",
             "label": "t:settings.hover_borders",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
@@ -212,28 +213,28 @@
             "type": "color",
             "id": "input_background",
             "label": "t:settings.background",
-            "default": "#FFFFFF",
+            "default": "#141414",
             "alpha": true
           },
           {
             "type": "color",
             "id": "input_text_color",
             "label": "t:settings.text",
-            "default": "#000000",
+            "default": "#F5F5F5",
             "alpha": true
           },
           {
             "type": "color",
             "id": "input_border_color",
             "label": "t:settings.borders",
-            "default": "#000000",
+            "default": "#2E2E2E",
             "alpha": true
           },
           {
             "type": "color",
             "id": "input_hover_background",
             "label": "t:settings.hover_background",
-            "default": "#F5F5F5",
+            "default": "#1A1A1A",
             "alpha": true
           },
           {
