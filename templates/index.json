@@ -526,177 +526,81 @@
         "gap_between_elements": 16
       }
     },
-    "collection_list_7GFnHi": {
-      "type": "collection-list",
+    "dcb_usp_bar_home": {
+      "type": "dcb-usp-bar",
       "blocks": {
-        "group_zbBhAQ": {
-          "type": "group",
-          "name": "t:names.header",
+        "u1": {
+          "type": "dcb_usp_item",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "icon": "cash",
+            "heading": "Cash on Delivery",
+            "text": "Pay when it arrives"
           },
-          "blocks": {
-            "text_WfmimH": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<h3>Shop by collection</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 16,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_WfmimH"
-          ]
+          "blocks": {}
         },
-        "static-collection-card": {
-          "type": "_collection-card",
-          "name": "t:names.collection_card",
-          "static": true,
+        "u2": {
+          "type": "dcb_usp_item",
           "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "center",
-            "vertical_alignment": "flex-end",
-            "collection_card_gap": 8,
-            "inherit_color_scheme": false,
-            "color_scheme": "scheme-3",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0
+            "icon": "truck",
+            "heading": "Nationwide Shipping",
+            "text": "Ships across PH"
           },
-          "blocks": {
-            "collection_title_C4mEYA": {
-              "type": "collection-title",
-              "name": "t:names.collection_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground-heading)",
-                "background": false,
-                "background_color": "#ffffff",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 4,
-                "padding-inline-start": 8,
-                "padding-inline-end": 8
-              },
-              "blocks": {}
-            },
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "name": "t:names.collection_card_image",
-              "static": true,
-              "settings": {
-                "image_ratio": "square",
-                "toggle_overlay": true,
-                "overlay_color": "#0303025e",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
+          "blocks": {}
+        },
+        "u3": {
+          "type": "dcb_usp_item",
+          "settings": {
+            "icon": "shield",
+            "heading": "100% Authentic",
+            "text": "Official DCB drops"
           },
-          "block_order": [
-            "collection_title_C4mEYA"
-          ]
+          "blocks": {}
+        },
+        "u4": {
+          "type": "dcb_usp_item",
+          "settings": {
+            "icon": "refresh",
+            "heading": "Easy Returns",
+            "text": "7-day hassle-free"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "group_zbBhAQ"
+        "u1",
+        "u2",
+        "u3",
+        "u4"
       ],
-      "name": "t:names.collections_grid",
       "settings": {
-        "collection_list": [
-          "t-shirts",
-          "polo",
-          "hoodies",
-          "jerseys-sandos",
-          "bottoms",
-          "eyewear",
-          "caps-headwear",
-          "bags",
-          "perfumes"
-        ],
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "bento_gap": 8,
-        "rows_gap": 8,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "color_scheme": "scheme-2",
+        "show_dividers": true,
+        "icon_size": 28,
+        "item_min_width": 200,
+        "gap": 16,
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      }
+    },
+    "dcb_drop_home": {
+      "type": "dcb-drop-countdown",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "NEXT DROP",
+        "heading": "THE DARTH DROP",
+        "subheading": "Limited run. No restocks. Set your alarm.",
+        "end_date": "2026-07-01",
+        "end_time": "18:00",
+        "utc_offset": "+08:00",
+        "expired_heading": "IT'S LIVE",
+        "button_label": "Shop the drop",
+        "button_link": "/collections/all",
+        "overlay_opacity": 50,
+        "content_alignment": "center",
+        "color_scheme": "scheme-5",
+        "min_height": 420,
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     },
     "media_with_content_eQETLf": {
@@ -1869,78 +1773,6 @@
         "padding-block-start": 40,
         "padding-block-end": 40
       }
-    },
-    "dcb_usp_bar_home": {
-      "type": "dcb-usp-bar",
-      "blocks": {
-        "u1": {
-          "type": "dcb_usp_item",
-          "settings": {
-            "icon": "cash",
-            "heading": "Cash on Delivery",
-            "text": "Pay when it arrives"
-          }
-        },
-        "u2": {
-          "type": "dcb_usp_item",
-          "settings": {
-            "icon": "truck",
-            "heading": "Nationwide Shipping",
-            "text": "Ships across PH"
-          }
-        },
-        "u3": {
-          "type": "dcb_usp_item",
-          "settings": {
-            "icon": "shield",
-            "heading": "100% Authentic",
-            "text": "Official DCB drops"
-          }
-        },
-        "u4": {
-          "type": "dcb_usp_item",
-          "settings": {
-            "icon": "refresh",
-            "heading": "Easy Returns",
-            "text": "7-day hassle-free"
-          }
-        }
-      },
-      "block_order": [
-        "u1",
-        "u2",
-        "u3",
-        "u4"
-      ],
-      "settings": {
-        "color_scheme": "scheme-2",
-        "show_dividers": true,
-        "icon_size": 28,
-        "item_min_width": 200,
-        "gap": 16,
-        "padding-block-start": 28,
-        "padding-block-end": 28
-      }
-    },
-    "dcb_drop_home": {
-      "type": "dcb-drop-countdown",
-      "settings": {
-        "eyebrow": "NEXT DROP",
-        "heading": "THE DARTH DROP",
-        "subheading": "Limited run. No restocks. Set your alarm.",
-        "end_date": "2026-07-01",
-        "end_time": "18:00",
-        "utc_offset": "+08:00",
-        "expired_heading": "IT'S LIVE",
-        "button_label": "Shop the drop",
-        "button_link": "/collections/all",
-        "overlay_opacity": 50,
-        "content_alignment": "center",
-        "color_scheme": "scheme-5",
-        "min_height": 420,
-        "padding-block-start": 64,
-        "padding-block-end": 64
-      }
     }
   },
   "order": [
@@ -1948,15 +1780,14 @@
     "hero_rhMed7",
     "marquee_izzYrQ",
     "dcb_usp_bar_home",
-    "collection_list_7GFnHi",
+    "product_list_4jqyPz",
     "dcb_drop_home",
     "media_with_content_eQETLf",
-    "product_list_4jqyPz",
     "product_list_wfV6WC",
+    "media_with_content_aF6TTD",
     "product_list_txFdp7",
     "section_8zY7P4",
     "divider_WDCL3k",
-    "media_with_content_aF6TTD",
     "section_fyiCcn"
   ]
 }
