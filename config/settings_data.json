@@ -84,24 +84,22 @@
         "disabled": false,
         "settings": {}
       },
-      "2965712708760319418": {
-        "type": "shopify://apps/proof-bear-sales-popup/blocks/widget/6e90b7fd-96ea-488b-9571-34f0c382838a",
-        "disabled": false,
-        "settings": {}
-      },
       "15683396631634586217": {
         "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
         "disabled": false,
         "settings": {
+          "greeting_message": "",
           "button_color": "#242428",
-          "secondary_color": "#ffffff",
-          "ternary_color": "#6a6a6a",
           "button_icon": "chat_bubble",
           "button_text": "message_us",
           "button_horizontal_position": "bottom_right",
-          "button_vertical_position": "higher",
-          "greeting_message": ""
+          "button_vertical_position": "higher"
         }
+      },
+      "2965712708760319418": {
+        "type": "shopify://apps/proof-bear-sales-popup/blocks/widget/6e90b7fd-96ea-488b-9571-34f0c382838a",
+        "disabled": true,
+        "settings": {}
       }
     },
     "color_schemes": {
